@@ -1,0 +1,38 @@
+# -*- coding: utf-8 -*-
+
+import os
+from unittest import TestCase
+from cachefly import (Client)
+
+
+class ClientTestCase(TestCase):
+    """Test case for :class:`Client`.
+    """
+
+    def setUp(self):
+        self.client = Client(os.environ['CACHEFLY_API_KEY'])
+
+    def test_purge(self):
+        """Client(..).purge(..)
+        """
+
+        # Purging with no files.
+        self.client.purge()
+
+        # Purging one file.
+        files = [
+            '/_testing/some-file',
+            '/_testing/some-other-file',
+            u'/_testing/æxotic-filename',
+        ]
+
+        for f in files:
+            self.client.purge(f)
+
+        # Purging with multiple files.
+        self.client.purge(*files)
+
+
+__all__ = (
+    'ClientTestCase',
+)
